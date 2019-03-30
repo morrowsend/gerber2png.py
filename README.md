@@ -24,12 +24,16 @@ python gerber2png.py -h
 
 Gerber2PNG.py ver. 2.1  march 2019
 
-usage: gerber2png.py [-h] [--input_name INPUT_NAME] [--border_mm BORDER_MM] [--ppi PPI] [--step STEP]
+usage: gerber2png.py [-h] [--project_name PROJECT_NAME]
+                     [--input_path INPUT_PATH] [--border_mm BORDER_MM]
+                     [--ppi PPI] [--step STEP]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --input_name INPUT_NAME, -i INPUT_NAME
-                        Project name
+  --project_name PROJECT_NAME, -n PROJECT_NAME
+                        Kicad Project Name
+  --input_path INPUT_PATH, -i INPUT_PATH
+                        Input Path
   --border_mm BORDER_MM, -b BORDER_MM
                         Border in mm
   --ppi PPI, -p PPI     ppi
@@ -39,26 +43,31 @@ optional arguments:
 Example:
 
 ```
-python gerber2png.py -i Project_Name -p 1000 -b 1
+python gerber2png.py -n Example -i Example/
+
+Gerber2PNG.py ver. 2.1  march 2019
+
+Searching directory: Example/
+Project name: Example
+...
 ```
 
-A better input for absolute paths will be done in future iterations, as well as a better export for drills and zones. As for now, filled zones (a common GND) or drills don't work that well.
+**WARNING**
+As for now, filled zones (a common GND) or drills don't work that well.
 
 #### KiCad Settings for Gerber export
 
-written for Build (2013-jul-07)-stable of Pcbnew. Checked for Kicad 5.
+Originally written for Build (2013-jul-07)-stable of Pcbnew. Checked for Kicad 5 in March 2019.
 
 * Use the "Set the origin point for the grid" tool to set the origin in the lower left point of the pcb edge.
 * Use the "Place the origin point for drill and place files" tools to to set the origin in the lower left point of the pcb edge.
 * Open the Export dialog via File > Plot
-
 * Plot format: Gerber
 * Set the output directory, usually "plots/". Say yes to relative path.
 * Mark the copper and mechanical layers you want to export. Usually F.Cu, B.Cu and Edge.Cuts.
 * Enable "Use Auxilliary axis as origin"
 * Enable "Use proper filename extensions"
 * Press Plot to generate the gerber files.
-
 * Next, press "Generate drill file".
 * Set the output directory, usually "plots/". Say yes to relative path.
 * Drill units: Inches.

@@ -567,9 +567,7 @@ def create_image(filename, dimensions, ppi, border_mm, primitives, inverted=Fals
 	im.save(filename, "PNG", dpi=(ppi,ppi))
 
 
-#===================================================================================
-
-def main(project_name, border_mm, ppi, step):
+def main(input_path, project_name, border_mm, ppi, step):
 
 	ppi = int(ppi)
 	border_mm = float(border_mm)
@@ -578,18 +576,17 @@ def main(project_name, border_mm, ppi, step):
 		print ("Project name cannot be empty")
 		return
 
-	#print("Searching directory:", current_dir)
+	print("Searching directory:", input_path)
 	print("Project name:", project_name)
 
-	#prefix = current_dir + "/" + project_name
-	prefix = project_name
+	prefix = os.path.join(input_path, project_name)
 
 	# Find Gerber Files
 	gerberfiles = {}
 	for gerber_type in gerber_file_formats:
 		gerberfiles[gerber_type] = list()
 		for gerber_format in gerber_file_formats[gerber_type]:
-			file = project_name + gerber_format
+			file = prefix + gerber_format
 			if os.path.isfile(file):
 				gerberfiles[gerber_type].append(file)
 				print("{} Gerber found:".format(gerber_type), file)
@@ -597,7 +594,7 @@ def main(project_name, border_mm, ppi, step):
 	# Find drill files
 	drillfiles = []
 	for drill_format in drill_file_formats:
-		file = project_name + drill_format
+		file = prefix + drill_format
 		if os.path.isfile(file):
 			drillfiles.append(file)
 			print("Drill found:",file)
@@ -625,16 +622,24 @@ def main(project_name, border_mm, ppi, step):
 		cutouts = []
 		cutouts.extend(edge_primitives)
 		cutouts.extend(drill_primitives)
-		create_image(project_name+"_MILL-CUTOUT.png", dimensions, ppi, border_mm, cutouts, True)
+		create_image(prefix+"_MILL-CUTOUT.png", dimensions, ppi, border_mm, cutouts, True)
 
-	create_image(project_name+"_F_MILL-TRACES.png", dimensions, ppi, border_mm, traces)
+	create_image(prefix+"_F_MILL-TRACES.png", dimensions, ppi, border_mm, traces)
+
+def dir_path(string):
+
+    if os.path.isdir(string):
+        return string
+    else:
+        raise NotADirectoryError(string)
 
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--input_name", "-i", default = "", help="Project name")
+	parser.add_argument("--project_name", "-n", type=dir_path, help="Kicad Project Name")
+	parser.add_argument("--input_path", "-i", type=dir_path, help="Input Path")
 	parser.add_argument("--border_mm", "-b", default = 0.5, help="Border in mm")
 	parser.add_argument("--ppi", "-p", default = 2000, help="ppi")
 	parser.add_argument("--step", "-s", default = 1, help="step")
 	args = parser.parse_args()
-	main(args.input_name, args.border_mm, args.ppi, args.step)
+	main(args.input_path, args.project_name, args.border_mm, args.ppi, args.step)
