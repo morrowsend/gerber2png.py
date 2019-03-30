@@ -2,6 +2,8 @@
 
 Originally forked from [dgnoner's work](https://github.com/dgonner/gerber2png.py).
 
+This code works with Python3. 
+
 ### Converts Gerber files from KiCad to PNG files for Fab Modules 
 
 For makers visiting a fablab that uses fabmodules for PCB manufacturing.
