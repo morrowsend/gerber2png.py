@@ -19,6 +19,11 @@ One png is for milling the traces, the other one is for the holes and outline.
 
 ### CLI usage
 
+First, you need to install PIL library. Do this by running
+```
+pip install Pillow
+```
+
 For now, the script has to be in the same folder as the gerber files exported from KiCad with the configuration below. The project name has to be specified with `-i`. The other options are optional:
 
 ```
